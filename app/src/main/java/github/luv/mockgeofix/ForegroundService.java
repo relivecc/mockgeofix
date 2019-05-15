@@ -64,15 +64,26 @@ public class ForegroundService extends Service {
         String portStr = pref.getString("listen_port", "5554");
 
         // deprecated but only API that works on everything from Gingerbread to Android N
-        Notification notification = new Notification(R.drawable.ic_notification,
-                getString(R.string.notification_ticker),
-                System.currentTimeMillis());
+
         Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
+
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent, 0);
-        notification.setLatestEventInfo(getApplicationContext(),
-                String.format(getString(R.string.notification_title), portStr),
-                getString(R.string.notification_text),
-                pendingIntent);
+
+        Notification.Builder builder = new Notification.Builder(this)
+                .setTicker("test")
+                .setContentIntent(pendingIntent)
+                .setSmallIcon(R.drawable.ic_notification)
+                .setContentText(getString(R.string.notification_text))
+                .setContentTitle(String.format(getString(R.string.notification_title), portStr));
+//        notification = builder.build();
+
+        Notification notification =  builder.build();
+
+//
+//        notification.setLatestEventInfo(getApplicationContext(),
+//                String.format(getString(R.string.notification_title), portStr),
+//                getString(R.string.notification_text),
+//                pendingIntent);
         startForeground(MockGeoFixApp.FOREGROUND_SERVICE_NOTIFICATION_ID, notification);
     }
 
